@@ -92,60 +92,60 @@ def extract_page(page_num: int):
     response_content = json.loads(response.read().decode('utf-8'))
     resultContentHTML = response_content['data']['results']['resultContentHtml']
     soup = BeautifulSoup(resultContentHTML, 'html.parser')
-    with open('a.txt', 'w', encoding='utf-8') as output_file:
-        # Property listing are contain in <div class="item property_item">
-        properties = soup.find_all("div", class_="item property_item")
+    
+    # Property listing are contain in <div class="item property_item">
+    properties = soup.find_all("div", class_="item property_item")
 
-        # Loop through each property listing
-        for property in properties:
-            # District area is nested in <div class="district_area">
-            district_area_parent_element = property.find("div", class_="district_area")
-            # the first <a> element under <div class="district_area"> is the district area
-            district_area = district_area_parent_element.find("a").get_text()
-            print(district_area)
+    # Loop through each property listing
+    for property in properties:
+        # District area is nested in <div class="district_area">
+        district_area_parent_element = property.find("div", class_="district_area")
+        # the first <a> element under <div class="district_area"> is the district area
+        district_area = district_area_parent_element.find("a").get_text()
+        print(district_area)
 
-            # Gross and saleable area is nested in <div class="areaUnitPrice">
-            # the first <div> element under <div class="areaUnitPrice"> is the gross area
-            # the second <div> element under <div class="areaUnitPrice"> is the saleable area
-            area_unit_price = property.find("div", class_="areaUnitPrice")
-            gross_and_saleable_area = area_unit_price.find_all("div")
-            gross_area = None
-            saleable_area = None
+        # Gross and saleable area is nested in <div class="areaUnitPrice">
+        # the first <div> element under <div class="areaUnitPrice"> is the gross area
+        # the second <div> element under <div class="areaUnitPrice"> is the saleable area
+        area_unit_price = property.find("div", class_="areaUnitPrice")
+        gross_and_saleable_area = area_unit_price.find_all("div")
+        gross_area = None
+        saleable_area = None
 
-            # Gross and saleable area are not always available
-            # So we need to check if the area is available before extracting the area
-            # There will always be two <div> elements under <div class="areaUnitPrice">, 
-            # but need to check if there is text in the <div> element
-            if gross_and_saleable_area[0].get_text().strip().split(" ")[0] == "Gross":
-                gross_area_str = gross_and_saleable_area[0].get_text().strip()
-                gross_area = get_area(gross_area_str)
-            if gross_and_saleable_area[1].get_text().strip().split(" ")[0] == "Saleable":
-                saleable_area_str = gross_and_saleable_area[1].get_text().strip()
-                saleable_area = get_area(saleable_area_str)
+        # Gross and saleable area are not always available
+        # So we need to check if the area is available before extracting the area
+        # There will always be two <div> elements under <div class="areaUnitPrice">, 
+        # but need to check if there is text in the <div> element
+        if gross_and_saleable_area[0].get_text().strip().split(" ")[0] == "Gross":
+            gross_area_str = gross_and_saleable_area[0].get_text().strip()
+            gross_area = get_area(gross_area_str)
+        if gross_and_saleable_area[1].get_text().strip().split(" ")[0] == "Saleable":
+            saleable_area_str = gross_and_saleable_area[1].get_text().strip()
+            saleable_area = get_area(saleable_area_str)
 
-            print(gross_area)
-            print(saleable_area)
+        print(gross_area)
+        print(saleable_area)
 
-            # Lease Price is nested in <div class="extra">
-            extra_info = property.find("div", class_="extra")
-            # Lease price is written in <div class="ui right floated green large label">
-            lease_price_element = extra_info.find("div", class_="ui right floated green large label")
-            if lease_price_element is None:
-                lease_price_element = extra_info.find("div", class_="ui right floated large label")
-            lease_price_str = lease_price_element.get_text()
- 
+        # Lease Price is nested in <div class="extra">
+        extra_info = property.find("div", class_="extra")
+        # Lease price is written in <div class="ui right floated green large label">
+        lease_price_element = extra_info.find("div", class_="ui right floated green large label")
+        if lease_price_element is None:
+            lease_price_element = extra_info.find("div", class_="ui right floated large label")
+        lease_price_str = lease_price_element.get_text()
 
-            # lease price is in the format of "HKD$123,456"
-            # We need to extract the numeric value from the string
-            # After split, the numeric value is the second element in the list
-            # e.g. "HKD$123,456" -> ["HKD$123,456"] -> ["HKD$", "123,456"] -> "123,456"
-            # Convert the numeric value to integer by removing the comma
-            lease_price = get_lease_price(lease_price_str.strip().split(" ")[1])
-            print(lease_price)
 
-            with open(csv_file_path, 'a', newline='') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow([district_area, gross_area, saleable_area, lease_price, page_num])
+        # lease price is in the format of "HKD$123,456"
+        # We need to extract the numeric value from the string
+        # After split, the numeric value is the second element in the list
+        # e.g. "HKD$123,456" -> ["HKD$123,456"] -> ["HKD$", "123,456"] -> "123,456"
+        # Convert the numeric value to integer by removing the comma
+        lease_price = get_lease_price(lease_price_str.strip().split(" ")[1])
+        print(lease_price)
+
+        with open(csv_file_path, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([district_area, gross_area, saleable_area, lease_price, page_num])
             
 
 if __name__ == "__main__":
