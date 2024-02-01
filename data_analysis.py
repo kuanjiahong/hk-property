@@ -38,6 +38,7 @@ if __name__ == "__main__":
         file.write(f"Number of records: **{len(df)}**\n\n")
         file.write(f"Number of district areas: **{len(df['District Area'].unique())}**\n\n")
         file.write("Data is obtained from [https://www.28hse.com/en/rent/residential](https://www.28hse.com/en/rent/residential)\n\n")
+        file.write(f"Source code can be found at [https://github.com/kuanjiahong/hk-property-analysis](https://github.com/kuanjiahong/hk-property-analysis)\n\n")
         file.write("\n")
 
         file.write("## Lease Price\n")
