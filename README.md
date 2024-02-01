@@ -4,6 +4,8 @@ Objective: **To gain insights about property lease price in Hong Kong**
 
 Data source: [https://www.28hse.com/en/rent/residential](https://www.28hse.com/en/rent/residential)
 
+Visit the GitHub page for the analysis: [https://kuanjiahong.github.io/hk-property-analysis/](https://kuanjiahong.github.io/hk-property-analysis/)
+
 ## File structure
 `web_scraper.py`: source code for data extraction
 
