@@ -71,15 +71,30 @@ if __name__ == "__main__":
         file.write("\n")
 
         file.write("## Top 10 most expensive district areas ranked according to the district area's average price\n")
-        file.write(df.groupby("District Area")["Lease Price"].mean().sort_values(ascending=False).head(10).to_markdown())
+        result = df.groupby("District Area")["Lease Price"].mean().sort_values(ascending=False).head(10)
+        count = 1
+        for index, value in result.items():
+            file.write(f"{count}. {index} : {format(round(value,2), ',')}\n")
+            count += 1
+
+        # file.write(df.groupby("District Area")["Lease Price"].mean().sort_values(ascending=False).head(10).to_markdown())
         file.write("\n")
 
         file.write("## Top 10 cheapest district areas ranked according to district area's average price\n")
-        file.write(df.groupby("District Area")["Lease Price"].mean().sort_values(ascending=True).head(10).to_markdown())
+        result = df.groupby("District Area")["Lease Price"].mean().sort_values(ascending=True).head(10)
+        count = 1
+        for index, value in result.items():
+            file.write(f"{count}. {index} : {format(round(value,2), ',')}\n")
+            count += 1
         file.write("\n")
 
         file.write("## District Areas and their number of listings\n")
-        file.write(df["District Area"].value_counts().to_markdown())
+        result = df["District Area"].value_counts()
+        count = 1
+        for index, value in result.items():
+            file.write(f"{count}. {index} : {value}\n")
+            count += 1
+        
         file.write("\n")
 
 
