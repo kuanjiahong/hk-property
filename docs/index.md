@@ -6,6 +6,8 @@ Number of district areas: **83**
 
 Data is obtained from [https://www.28hse.com/en/rent/residential](https://www.28hse.com/en/rent/residential)
 
+Source code can be found at [https://github.com/kuanjiahong/hk-property-analysis](https://github.com/kuanjiahong/hk-property-analysis)
+
 
 ## Lease Price
 Highest lease price: **HKD$400,000**
