@@ -78,7 +78,6 @@ if __name__ == "__main__":
             file.write(f"{count}. {index} : {format(round(value,2), ',')}\n")
             count += 1
 
-        # file.write(df.groupby("District Area")["Lease Price"].mean().sort_values(ascending=False).head(10).to_markdown())
         file.write("\n")
 
         file.write("## Top 10 cheapest district areas ranked according to district area's average price\n")
